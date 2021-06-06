@@ -40,7 +40,9 @@ class _HomeState extends State<Home> {
             _database.workout.add(_workoutEdit.workout);
           });
         } else {
-          _database.workout[index] = _workoutEdit.workout;
+          setState(() {
+            _database.workout[index] = _workoutEdit.workout;
+          });
         }
         DatabaseFileRoutines().writeWorkouts(databaseToJson(_database));
         break;

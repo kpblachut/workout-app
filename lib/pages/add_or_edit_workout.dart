@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:spec_redone/classes/database.dart';
 import 'package:spec_redone/pages/add_or_edit_exercise.dart';
 import 'dart:math';
@@ -25,12 +26,12 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
   void initState() { 
     super.initState();
     _workoutEdit = WorkoutEdit(action: "Cancel", workout: widget.workoutEdit.workout);
-    _title = widget.add ? 'Add' : 'Edit';
+    _title = widget.add ? 'New Workout' : 'Edit ${_workoutEdit.workout.name}';
     _workoutEdit.workout = widget.workoutEdit.workout;
     
 
     if (widget.add) {
-      _workoutTitleControler.text = "";
+      _workoutTitleControler.text = "New Workout";
       _exercises = [];
     } else {
       _workoutTitleControler.text = _workoutEdit.workout.name;
@@ -78,8 +79,23 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // TODO: Change to TextField
-        title: Text("$_title Workout"),
+        // Workout title tetxfield
+        title: TextField(
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0
+          ),
+          controller: _workoutTitleControler,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(32)
+          ],
+          decoration: InputDecoration(
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+          ),
+        ),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -91,14 +107,14 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
                   : _workoutEdit.workout.id;
               _workoutEdit.workout = Workout(
                 id: _id,
-                name: "Workout#$_id",
+                name: _workoutTitleControler.text,
                 exercises: _exercises,
               );
               Navigator.pop(context, _workoutEdit);
             },
           ),
           IconButton(
-            icon: Icon(Icons.exit_to_app),
+            icon: Icon(Icons.close),
             onPressed: () {
               _workoutEdit.action = 'Cancel';
               Navigator.pop(context, _workoutEdit);
