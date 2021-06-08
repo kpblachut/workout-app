@@ -45,8 +45,34 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
     super.dispose();
   }
 
+  void _editExercise({int index, Exercise exercise}) async {
+    ExerciseEdit _exerciseEdit = ExerciseEdit(action: "Cancel", exercise: exercise);
+
+    _exerciseEdit = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => AddOrEditExercise(
+          add: false,
+          index: index,
+          exerciseEdit: _exerciseEdit,
+        )
+      )
+    );
+
+    switch(_exerciseEdit.action) {
+      case 'Save': 
+        _exercises[index] = _exerciseEdit.exercise;
+        break;
+      case 'Cancel':
+        break;
+      default:
+        break;
+    }
+  }
+
   void _addOrEditExercise({bool add, int index, Exercise exercise}) async {
-    ExerciseEdit _exerciseEdit = ExerciseEdit(action: "", exercise: exercise);
+    ExerciseEdit _exerciseEdit = ExerciseEdit(action: "Cancel", exercise: exercise);
     _exerciseEdit = await Navigator.push(
       context,
       MaterialPageRoute(

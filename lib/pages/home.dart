@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
   }
 
   void _addOrEditWorkout({bool add, int index, Workout workout}) async {
-    WorkoutEdit _workoutEdit = WorkoutEdit(action: "", workout: workout);
+    WorkoutEdit _workoutEdit = WorkoutEdit(action: "Cancel", workout: workout);
     _workoutEdit = await Navigator.push(
       context,
       MaterialPageRoute(
