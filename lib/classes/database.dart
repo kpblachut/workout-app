@@ -2,6 +2,9 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:spec_redone/models/exercise_model.dart';
+import 'package:spec_redone/models/workout_model.dart';
+
 class DatabaseFileRoutines {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -55,49 +58,6 @@ class Database {
 
   Map<String, dynamic> toJson() =>
       {"workouts": List<dynamic>.from(workout.map((x) => x.toJson()))};
-}
-
-class Workout {
-  String id;
-  String name;
-  List<Exercise> exercises;
-  
-
-  Workout({this.id, this.name, this.exercises});
-
-  factory Workout.fromJson(Map<String, dynamic> json) => Workout(
-      id: json['id'],
-      name: json['name'],
-      exercises: new List<Exercise>.from(json["exercises"].map((x) => Exercise.fromJson(x)))
-    );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'exercises': new List<dynamic>.from(exercises.map((x) => x.toJson()))
-      };
-}
-
-class Exercise {
-  String id;
-  String name;
-  String sets;
-
-  Exercise({
-    this.id, this.sets, this.name
-  });
-
-  factory Exercise.fromJson(Map<String, dynamic> json) => new Exercise(
-    id: json['id'],
-    name: json['name'],
-    sets: json['sets']
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "sets": sets
-  };
 }
 
 class WorkoutEdit {

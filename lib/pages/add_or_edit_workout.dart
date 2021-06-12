@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:spec_redone/classes/database.dart';
+import 'package:spec_redone/models/exercise_model.dart';
+import 'package:spec_redone/models/workout_model.dart';
 import 'package:spec_redone/pages/add_or_edit_exercise.dart';
 import 'dart:math';
 

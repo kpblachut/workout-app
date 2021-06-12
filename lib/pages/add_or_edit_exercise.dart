@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:spec_redone/classes/database.dart';
 import 'dart:math';
 
+import 'package:spec_redone/models/exercise_model.dart';
+
 
 class AddOrEditExercise extends StatefulWidget {
   final bool add;
