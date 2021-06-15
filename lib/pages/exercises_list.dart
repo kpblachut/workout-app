@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:spec_redone/classes/exercice_db.dart';
 import 'package:spec_redone/models/exercise_model.dart';
 
-
 class ExerciseListPage extends StatefulWidget {
-  ExerciseListPage({Key key}) : super(key: key);
+  final ExerciseEdit exerciseEdit;
+
+  ExerciseListPage({Key key, this.exerciseEdit}) : super(key: key);
 
   @override
   _ExerciseListPageState createState() => _ExerciseListPageState();
@@ -26,9 +27,16 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Create Layout for ExerciseListPage 
-    return Container(
-       child: null,
+    // TODO: Create Layout for ExerciseListPage
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Choose exercise"),
+      ),
+      body: Center(child: Text("exercise list page")),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
     );
   }
 }

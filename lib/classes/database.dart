@@ -25,11 +25,11 @@ class DatabaseFileRoutines {
       }
       String contents = await file.readAsString();
       return contents;
-      } catch (e) {
-        print("error readWorkouts: $e");
-        return "";
-      }
+    } catch (e) {
+      print("error readWorkouts: $e");
+      return "";
     }
+  }
 
   Future<File> writeWorkouts(String json) async {
     final file = await _localFile;
@@ -58,18 +58,4 @@ class Database {
 
   Map<String, dynamic> toJson() =>
       {"workouts": List<dynamic>.from(workout.map((x) => x.toJson()))};
-}
-
-class WorkoutEdit {
-  String action;
-  Workout workout;
-
-  WorkoutEdit({this.action, this.workout});
-}
-
-class ExerciseEdit {
-  String action;
-  Exercise exercise;
-
-  ExerciseEdit({this.action, this.exercise});
 }
