@@ -49,13 +49,13 @@ String databaseToJson(ExercisesDB data) {
 
 
 class ExercisesDB {
-  List<Exercise> workout;
-  ExercisesDB({this.workout});
+  List<Exercise> exercises;
+  ExercisesDB({this.exercises});
   factory ExercisesDB.fromJson(Map<String, dynamic> json) => ExercisesDB(
-        workout: List<Exercise>.from(
+        exercises: List<Exercise>.from(
             json["exercises"].map((x) => Exercise.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() =>
-      {"exercises": List<dynamic>.from(workout.map((x) => x.toJson()))};
+      {"exercises": List<dynamic>.from(exercises.map((x) => x.toJson()))};
 }

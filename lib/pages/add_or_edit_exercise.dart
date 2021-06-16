@@ -26,7 +26,7 @@ class _AddOrEditExerciseState extends State<AddOrEditExercise> {
   @override
   void initState() { 
     super.initState();
-    _exerciseEdit = ExerciseEdit(action: 'Cancel', exercise: widget.exerciseEdit.exercise);
+    _exerciseEdit = new ExerciseEdit(action: 'Cancel', exercise: widget.exerciseEdit.exercise);
     _title = widget.add ? 'Add' : 'Edit';
     _exerciseEdit.exercise = widget.exerciseEdit.exercise; 
 
@@ -54,6 +54,7 @@ class _AddOrEditExerciseState extends State<AddOrEditExercise> {
        child: Scaffold(
          appBar: AppBar(
            title: Text("$_title Edit"),
+           automaticallyImplyLeading: false,
          ),
          body: SafeArea(
            child: SingleChildScrollView(

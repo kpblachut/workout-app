@@ -30,7 +30,7 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
   void initState() {
     super.initState();
     _workoutEdit =
-        WorkoutEdit(action: "Cancel", workout: widget.workoutEdit.workout);
+        WorkoutEdit(action: '', workout: widget.workoutEdit.workout);
     _title = widget.add ? 'New Workout' : 'Edit ${_workoutEdit.workout.name}';
     _workoutEdit.workout = widget.workoutEdit.workout;
 
@@ -49,17 +49,27 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
     super.dispose();
   }
 
-  void _addExercise({Exercise exercise}) async {
-    ExerciseEdit _exerciseEdit = ExerciseEdit(action: "", exercise: exercise);
+  void _addExercise() async {
+    ExerciseEdit _exerciseEdit;
 
     _exerciseEdit = await Navigator.push(
         context,
         MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context) => ExerciseListPage(
-            exerciseEdit: _exerciseEdit,
-          ),
+          builder: (context) => ExerciseListPage(),
         ));
+
+    switch (_exerciseEdit.action) {
+      case 'Save':
+        setState(() {
+          _exercises.add(_exerciseEdit.exercise);
+        });
+        break;
+      case 'Cancel':
+        break;
+      default:
+        break;
+    }
   }
 
   void _editExercise({int index, Exercise exercise}) async {
@@ -78,6 +88,7 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
 
     switch (_exerciseEdit.action) {
       case 'Save':
+      
         _exercises[index] = _exerciseEdit.exercise;
         break;
       case 'Cancel':
@@ -89,7 +100,7 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
 
   void _addOrEditExercise({bool add, int index, Exercise exercise}) async {
     ExerciseEdit _exerciseEdit =
-        ExerciseEdit(action: "Cancel", exercise: exercise);
+        new ExerciseEdit(action: "Cancel", exercise: exercise);
     _exerciseEdit = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -216,7 +227,7 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          _addExercise(exercise: Exercise());
+          _addExercise();
         },
       ),
     );
