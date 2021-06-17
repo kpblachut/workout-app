@@ -21,26 +21,31 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
     return _database.exercises;
   }
 
-  void _addExercise() async {
-    ExerciseEdit _exerciseEdit = ExerciseEdit(action: "Cancel", exercise: Exercise());
+  void _addOrEditExercise({bool add, int index, Exercise exercise}) async {
+    ExerciseEdit _exerciseEdit = ExerciseEdit(action: "Cancel", exercise: exercise);
 
     _exerciseEdit = await Navigator.push(
         context,
         MaterialPageRoute(
           fullscreenDialog: true,
           builder: (context) => AddOrEditExercise(
-            add: true,
-            index: -1,
+            add: add,
+            index: index,
             exerciseEdit: _exerciseEdit,
           ),
         ));
 
     switch (_exerciseEdit.action) {
       case 'Save':
-        setState(() {
+        if (add) {
+          setState(() {
           _database.exercises.add(_exerciseEdit.exercise);
-        });
-
+          });
+        } else {
+          setState(() {
+            _database.exercises[index] = _exerciseEdit.exercise;
+          });
+        }
         ExerciseDBFilesRoutine().writeExercises(databaseToJson(_database));
         break;
       case 'Cancel':
@@ -77,6 +82,11 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
 
               Navigator.pop(context, _exerciseEdit);
             },
+            onLongPress: () => _addOrEditExercise(
+              add: false,
+              exercise: snapshot.data[index],
+              index: index
+            )
           ),
         );
       },
@@ -112,7 +122,11 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => _addExercise(),
+        onPressed: () => _addOrEditExercise(
+          add: true,
+          index: -1,
+          exercise: Exercise()
+        ),
       ),
     );
   }
