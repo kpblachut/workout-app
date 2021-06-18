@@ -173,57 +173,70 @@ class _AddOrEditWorkoutState extends State<AddOrEditWorkout> {
           ? Center(
               child: Text("No exercises yet..."),
             )
-          : ListView.separated(
-              itemCount: _exercises.length,
-              separatorBuilder: (context, index) {
-                return Divider(color: Colors.grey);
-              },
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  key: Key(_exercises[index].id),
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.white,
+          : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                itemCount: _exercises.length,
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: Key(_exercises[index].id),
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 16.0),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  secondaryBackground: Container(
-                    alignment: Alignment.centerRight,
-                    color: Colors.red,
-                    padding: EdgeInsets.only(right: 16.0),
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.white,
+                    secondaryBackground: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.red,
+                      padding: EdgeInsets.only(right: 16.0),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  child: ListTile(
-                    leading: Text(
-                      "${index + 1}.",
-                      style:
-                          TextStyle(fontSize: 20.0, color: Colors.deepOrange),
+                    child: Card(
+                      elevation: 8.0,
+                      color: Colors.grey.shade900,
+                      child: ListTile(
+                        leading: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${index + 1}.",
+                              style:
+                                  TextStyle(fontSize: 22.0, color: Colors.deepOrange),
+                            ),
+                          ],
+                        ),
+                        title: Text(
+                          _exercises[index].name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17.0
+                          ),
+                        ),
+                        subtitle: Text("Sets: ${_exercises[index].sets}", style: TextStyle(color: Colors.white60),),
+                        onTap: () {
+                          _addOrEditExercise(
+                              add: false,
+                              index: index,
+                              exercise: _exercises[index]);
+                        },
+                      ),
                     ),
-                    title: Text(
-                      _exercises[index].name,
-                    ),
-                    subtitle: Text("Sets: ${_exercises[index].sets}"),
-                    onTap: () {
-                      _addOrEditExercise(
-                          add: false,
-                          index: index,
-                          exercise: _exercises[index]);
+                    onDismissed: (direction) {
+                      setState(() {
+                        _exercises.removeAt(index);
+                      });
                     },
-                  ),
-                  onDismissed: (direction) {
-                    setState(() {
-                      _exercises.removeAt(index);
-                    });
-                  },
-                );
-              },
-            ),
+                  );
+                },
+              ),
+          ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {

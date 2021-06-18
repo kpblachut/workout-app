@@ -55,62 +55,81 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Widget _buildListViewSeparated(AsyncSnapshot snapshot) {
+  Widget _buildWorkoutList(AsyncSnapshot snapshot) {
      
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        List<Exercise> _tempExercises = snapshot.data[index].exercises;
-        String _description = "";
-        _tempExercises.forEach((element) { 
-          _description += element.name + "\n";
-        });
-        return Dismissible(
-          key: Key(snapshot.data[index].id),
-            background: Container(
-              color: Colors.red,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 16.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          List<Exercise> _tempExercises = snapshot.data[index].exercises;
+          String _description = "";
+          _tempExercises.forEach((element) { 
+            _description += "\u2022 " + element.name + "\n";
+          });
+
+          return Dismissible(
+            key: Key(snapshot.data[index].id),
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 16.0),
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+              secondaryBackground: Container(
+                alignment: Alignment.centerRight,
+                color: Colors.red,
+                padding: EdgeInsets.only(right: 16.0),
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+            child: Card(
+              color: Colors.grey.shade900,
+              child: ListTile(
+                leading: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.accessibility,
+                      color: Colors.deepOrange,
+                      size: 34.0,
+                    ),
+                  ],
+                ),
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    snapshot.data[index].name,
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+                subtitle: Text(
+                  _description,
+                  style: TextStyle(
+                    color: Colors.white60
+                  ),
+                ),
+                onTap: () {
+                  _addOrEditWorkout(add: false, index: index, workout: snapshot.data[index]);
+                },
               ),
             ),
-            secondaryBackground: Container(
-              alignment: Alignment.centerRight,
-              color: Colors.red,
-              padding: EdgeInsets.only(right: 16.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-          child: ListTile(
-            leading: Icon(
-              Icons.sports,
-              color: Colors.deepOrange,
-            ),
-            title: Text(
-              snapshot.data[index].name
-            ),
-            subtitle: Text(_description),
-            onTap: () {
-              _addOrEditWorkout(add: false, index: index, workout: snapshot.data[index]);
-            },
-          ),
-          onDismissed: (direction) {
-              setState(() {
-                _database.workout.removeAt(index);
-              });
-              DatabaseFileRoutines().writeWorkouts(databaseToJson(_database));
-            },
-        );
-      },
-      itemCount: snapshot.data.length,
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider(
-          color: Colors.grey,
-        );
-      },
+            onDismissed: (direction) {
+                setState(() {
+                  _database.workout.removeAt(index);
+                });
+                DatabaseFileRoutines().writeWorkouts(databaseToJson(_database));
+              },
+          );
+        },
+        itemCount: snapshot.data.length,
+      ),
     );
   }
 
@@ -119,14 +138,16 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        elevation: 0.0,
+        elevation: 8.0,
         child: Icon(Icons.add),
         onPressed: () {
           _addOrEditWorkout(add: true, index: -1, workout: Workout());
         },
       ),
       bottomNavigationBar: BottomAppBar(
-        elevation: 0.0,
+        clipBehavior: Clip.antiAlias,
+        shape: CircularNotchedRectangle(),
+        elevation: 8.0,
         child: Container(
           color: Colors.deepOrange,
           height: 50.0,
@@ -141,7 +162,7 @@ class _HomeState extends State<Home> {
               ? Center(
                 child: CircularProgressIndicator()
               )
-              : _buildListViewSeparated(snapshot);
+              : _buildWorkoutList(snapshot);
           },
         ),
       ),

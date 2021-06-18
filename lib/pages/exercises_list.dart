@@ -56,40 +56,51 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
   }
 
   Widget _buildListViewSeparated(AsyncSnapshot snapshot) {
-    return ListView.separated(
-      itemCount: snapshot.data.length,
-      separatorBuilder: (context, index) {
-        return Divider(
-          color: Colors.grey,
-        );      
-      },
-      itemBuilder: (context, index) {
-        return Card(
-          elevation: 2.0,
-          child: ListTile(
-            leading: CircleAvatar(
-              child: Text("${snapshot.data[index].name[0]}"),
-              backgroundColor: Colors.grey.shade600,
-            ),
-            title: Text(snapshot.data[index].name),
-            onTap: () {
-              _exerciseEdit.action = "Save";
-              _exerciseEdit.exercise = Exercise(
-                id: snapshot.data[index].id,
-                name: snapshot.data[index].name,
-                sets: snapshot.data[index].sets
-              );
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: snapshot.data.length,
+        itemBuilder: (context, index) {
+          return Card(
+            color: Colors.grey.shade900,
+            elevation: 2.0,
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 22.0,
+                child: Text(
+                  "${snapshot.data[index].name[0]}", 
+                  style: TextStyle(
+                    color: Colors.deepOrange.shade500,
+                    fontSize: 20.0
+                  ),
+                ),
+                backgroundColor: Colors.grey.shade800,
+              ),
+              title: Text(
+                snapshot.data[index].name,
+                style: TextStyle(
+                  color: Colors.white70
+                ),
+              ),
+              onTap: () {
+                _exerciseEdit.action = "Save";
+                _exerciseEdit.exercise = Exercise(
+                  id: snapshot.data[index].id,
+                  name: snapshot.data[index].name,
+                  sets: snapshot.data[index].sets
+                );
 
-              Navigator.pop(context, _exerciseEdit);
-            },
-            onLongPress: () => _addOrEditExercise(
-              add: false,
-              exercise: snapshot.data[index],
-              index: index
-            )
-          ),
-        );
-      },
+                Navigator.pop(context, _exerciseEdit);
+              },
+              onLongPress: () => _addOrEditExercise(
+                add: false,
+                exercise: snapshot.data[index],
+                index: index
+              )
+            ),
+          );
+        },
+      ),
     );
   }
 

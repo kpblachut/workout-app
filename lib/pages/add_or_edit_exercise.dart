@@ -81,8 +81,8 @@ class _AddOrEditExerciseState extends State<AddOrEditExercise> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FlatButton(
-                      child: Text('Cancel'),
-                      color: Colors.grey.shade100,
+                      child: Text('Cancel', style: TextStyle(color: Colors.white70),),
+                      color: Colors.grey.shade900,
                       onPressed: () {
                         _exerciseEdit.action = 'Cancel';
                         Navigator.pop(context, _exerciseEdit);
